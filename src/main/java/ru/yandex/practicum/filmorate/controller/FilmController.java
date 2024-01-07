@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.FilmCreateException;
+import ru.yandex.practicum.filmorate.exception.CreateException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.Valid;
@@ -29,7 +29,7 @@ public class FilmController {
     public Film create(@Valid @RequestBody Film film) {
         film.setId(++id);
         if (MINFILMDATE.isAfter(film.getReleaseDate())) {
-            throw new FilmCreateException("Дата релиза должна быть не ранее 1895-12-28");
+            throw new CreateException("Дата релиза должна быть не ранее 1895-12-28");
         }
         films.put(film.getId(), film);
         log.info("Добавлен фильм " + film.getName());
@@ -41,7 +41,7 @@ public class FilmController {
         if (films.containsKey(film.getId())) {
             films.put(film.getId(), film);
         } else {
-            throw new FilmCreateException("Фильм с указанным Id не найден");
+            throw new CreateException("Фильм с указанным Id не найден");
         }
         log.info("Фильм " + film.getName() + " изменен");
         return film;

@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.exception.FilmCreateException;
+import ru.yandex.practicum.filmorate.exception.CreateException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.ConstraintViolation;
@@ -47,11 +47,11 @@ class FilmControllerTest {
         Film film = new Film();
         film.setReleaseDate(LocalDate.of(1894, 12, 28));
 
-        final FilmCreateException exception = assertThrows(
-                FilmCreateException.class,
+        final CreateException exception = assertThrows(
+                CreateException.class,
                 () -> filmController.create(film));
 
-        assertEquals(FilmCreateException.class, exception.getClass());
+        assertEquals(CreateException.class, exception.getClass());
         assertEquals(exception.getMessage(), "Дата релиза должна быть не ранее 1895-12-28");
     }
 

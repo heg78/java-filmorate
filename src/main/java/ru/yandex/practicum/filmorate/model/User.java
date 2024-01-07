@@ -9,13 +9,13 @@ import java.time.LocalDate;
 
 @Data
 public class User {
-    Integer id;
+    private Integer id;
     @Email(message = "Формат не соответствует Email")
     @NotBlank(message = "Email не может быть пустым")
-    String email;
+    private String email;
     @NotBlank(message = "Логин не может быть пустым")
-    String login;
-    String name;
+    private String login;
+    private String name;
     @Past(message = "Дата рождения не может быть в будущем")
-    LocalDate birthday;
+    private LocalDate birthday;
 }

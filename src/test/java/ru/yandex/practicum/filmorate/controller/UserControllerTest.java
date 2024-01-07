@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.exception.UserCreateException;
+import ru.yandex.practicum.filmorate.exception.CreateException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.ConstraintViolation;
@@ -46,11 +46,11 @@ class UserControllerTest {
     void createLoginWithWhiteSpace() {
         User user = new User();
         user.setLogin("Lo gin");
-        final UserCreateException exception = assertThrows(
-                UserCreateException.class,
+        final CreateException exception = assertThrows(
+                CreateException.class,
                 () -> userController.create(user));
 
-        assertEquals(UserCreateException.class, exception.getClass());
+        assertEquals(CreateException.class, exception.getClass());
         assertEquals(exception.getMessage(), "Имя пользователя не может содержать пробелы");
     }
 

@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.UserCreateException;
+import ru.yandex.practicum.filmorate.exception.CreateException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
@@ -26,7 +26,7 @@ public class UserController {
     @PostMapping()
     public User create(@Valid @RequestBody User user) {
         if (user.getLogin().contains(" ")) {
-            throw new UserCreateException("Имя пользователя не может содержать пробелы");
+            throw new CreateException("Имя пользователя не может содержать пробелы");
         }
         user.setId(++id);
         if (user.getName() == null || user.getName().isBlank()) {
@@ -41,7 +41,7 @@ public class UserController {
     public User update(@Valid @RequestBody User user) {
         if (users.containsKey(user.getId())) {
             if (user.getLogin().contains(" ")) {
-                throw new UserCreateException("Имя пользователя не может содержать пробелы");
+                throw new CreateException("Имя пользователя не может содержать пробелы");
             }
             if (user.getName().isBlank()) {
                 user.setName(user.getLogin());
@@ -49,7 +49,7 @@ public class UserController {
             users.put(user.getId(), user);
             log.info("Пользователь " + user.getName() + " изменен");
         } else {
-            throw new UserCreateException("Пользователь с указанным ID не найден");
+            throw new CreateException("Пользователь с указанным ID не найден");
         }
         return user;
     }
