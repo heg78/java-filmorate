@@ -3,9 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -32,7 +30,9 @@ public class FilmController {
     }
 
     @PutMapping()
-    public Film update(@Valid @RequestBody Film film) {return filmService.update(film);}
+    public Film update(@Valid @RequestBody Film film) {
+        return filmService.update(film);
+    }
 
     @GetMapping("/{id}")
     public Film find(@PathVariable("id") Integer id) {
@@ -41,7 +41,7 @@ public class FilmController {
 
     @GetMapping("/popular")
     public List<Film> getPopular(@RequestParam(defaultValue = "10", required = false) Integer count) {
-          return filmService.getPopular(count);
+        return filmService.getPopular(count);
     }
 
     @PutMapping("{id}/like/{userId}")
