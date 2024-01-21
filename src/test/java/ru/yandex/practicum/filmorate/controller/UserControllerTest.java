@@ -2,9 +2,13 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.exception.CreateException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -16,12 +20,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserControllerTest {
+    @Autowired
     UserController userController;
+    @Autowired
+    UserStorage userStorage;
+    @Autowired
+    UserService userService;
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
     @BeforeEach
     void setUp() {
-        userController = new UserController();
+        userService = new UserService(userStorage);
+        userController = new UserController(userService);
     }
 
     @Test

@@ -2,9 +2,13 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.exception.CreateException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -16,12 +20,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class FilmControllerTest {
+    @Autowired
     FilmController filmController;
+    @Autowired
+    FilmService filmService;
+    @Autowired
+    FilmStorage filmStorage;
     private static final Validator VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
     @BeforeEach
     void setUp() {
-        filmController = new FilmController();
+        filmService = new FilmService(filmStorage);
+        filmController = new FilmController(filmService);
     }
 
     @Test
