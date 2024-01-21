@@ -21,13 +21,19 @@ public class UserController {
     }
 
     @GetMapping()
-    public Collection<User> findAll() {return userService.findAll();}
+    public Collection<User> findAll() {
+        return userService.findAll();
+    }
 
     @PostMapping()
-    public User create(@Valid @RequestBody User user) {return userService.create(user);}
+    public User create(@Valid @RequestBody User user) {
+        return userService.create(user);
+    }
 
     @PutMapping()
-    public User update(@Valid @RequestBody User user) {return userService.update(user);}
+    public User update(@Valid @RequestBody User user) {
+        return userService.update(user);
+    }
 
     @GetMapping("/{id}")
     public User find(@PathVariable("id") Integer id) {
@@ -51,6 +57,6 @@ public class UserController {
 
     @GetMapping("{id}/friends/common/{otherId}")
     public List<User> commonFriend(@PathVariable("id") Integer id, @PathVariable("otherId") Integer otherId) {
-      return userService.commonFriend(id, otherId);
+        return userService.commonFriend(id, otherId);
     }
 }
