@@ -30,7 +30,7 @@ public class InMemoryUserStorage implements UserStorage {
             user.setName(user.getLogin());
         }
         users.put(user.getId(), user);
-        log.info("Добавлен пользователь " + user.getName());
+        log.info("Добавлен пользователь {}", user.getName());
         return user;
     }
 
@@ -43,7 +43,7 @@ public class InMemoryUserStorage implements UserStorage {
                 user.setName(user.getLogin());
             }
             users.put(user.getId(), user);
-            log.info("Пользователь " + user.getName() + " изменен");
+            log.info("Пользователь {} изменен", user.getName() );
         } else {
             throw new CreateException("Пользователь с указанным ID не найден");
         }

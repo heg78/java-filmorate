@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
@@ -11,13 +12,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     @Autowired
-    UserStorage userStorage;
-
-    public UserService(UserStorage userStorage) {
-        this.userStorage = userStorage;
-    }
+    private final UserStorage userStorage;
 
     public Collection<User> findAll() {
         return userStorage.findAll();
@@ -32,8 +30,9 @@ public class UserService {
     }
 
     public User find(Integer id) {
-        if (userStorage.find(id) != null) {
-            return userStorage.find(id);
+        User user = userStorage.find(id);
+        if (user != null) {
+            return user;
         } else {
             throw new NotFoundException("Пользователь не найден!");
         }
