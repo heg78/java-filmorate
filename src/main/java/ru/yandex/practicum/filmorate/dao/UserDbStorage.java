@@ -21,8 +21,6 @@ import java.util.*;
 @Component
 public class UserDbStorage implements UserStorage {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    //private final Map<Integer, User> users = new HashMap<>();
-    //private static int id = 0;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -97,13 +95,13 @@ public class UserDbStorage implements UserStorage {
         }
     }
 
-    public boolean exists(Integer id) {
+    boolean exists(Integer id) {
         String sqlQuery = "select exists(select 1 from users where id = ?)";
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, id));
     }
 
     public void addFriend(Integer userId, Integer friendId) {
-        String sqlQuery = "insert into frends(user_id, frend_id) values(?, ?)";
+        String sqlQuery = "insert into friends(user_id, friend_id) values(?, ?)";
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(sqlQuery);
             stmt.setInt(1, userId);
@@ -113,7 +111,7 @@ public class UserDbStorage implements UserStorage {
     }
 
     public void deleteFriend(Integer userId, Integer friendId) {
-        String sqlQuery = "delete from frends where user_id = ? and frend_id = ?";
+        String sqlQuery = "delete from friends where user_id = ? and friend_id = ?";
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(sqlQuery);
             stmt.setInt(1, userId);
@@ -125,7 +123,7 @@ public class UserDbStorage implements UserStorage {
     @Override
     public List<Integer> getFriends(Integer userId) {
         if (!exists(userId)) throw new NotFoundException("Пользователь с указанным ID не найден");
-        String sqlQuery = "select frend_id from frends where user_id = ?";
+        String sqlQuery = "select friend_id from friends where user_id = ?";
         return jdbcTemplate.queryForList(sqlQuery, Integer.class, userId);
     }
 

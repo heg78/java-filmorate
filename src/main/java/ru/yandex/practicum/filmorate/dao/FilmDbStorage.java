@@ -93,7 +93,7 @@ public class FilmDbStorage implements FilmStorage {
         return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToFilm, id);
     }
 
-    public boolean exists(Integer id) {
+    private boolean exists(Integer id) {
         String sqlQuery = "select exists(select 1 from films where id = ?)";
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, id));
     }
@@ -120,7 +120,7 @@ public class FilmDbStorage implements FilmStorage {
         });
     }
 
-    public void clearGenre(Integer filmId) {
+    private void clearGenre(Integer filmId) {
         if (!exists(filmId)) throw new NotFoundException("Фильм с указанным Id не найден");
         String sqlQuery = "delete from genres where film_id = ?";
         jdbcTemplate.update(connection -> {
@@ -130,7 +130,7 @@ public class FilmDbStorage implements FilmStorage {
         });
     }
 
-    public Film updateGenre(Film film) {
+    private Film updateGenre(Film film) {
         if (!exists(film.getId())) throw new NotFoundException("Фильм с указанным Id не найден");
 
         clearGenre(film.getId());
@@ -138,8 +138,8 @@ public class FilmDbStorage implements FilmStorage {
         List<Genre> newGenres = Optional.ofNullable(film.getGenres()).orElse(new ArrayList<>());
         if (newGenres.isEmpty()) return film;
 
-        Set<Genre> newIdGenres = new HashSet<>(newGenres);
-        List<Genre> filterGenre = newIdGenres.stream().sorted((g1, g2) -> g1.getId() - g2.getId()).collect(Collectors.toList());
+        Set<Genre> newFilteredGenres = new HashSet<>(newGenres);
+        List<Genre> filterGenre = newFilteredGenres.stream().sorted(Comparator.comparingInt(Genre::getId)).collect(Collectors.toList());
 
         film.setGenres(filterGenre);
 
@@ -166,9 +166,9 @@ public class FilmDbStorage implements FilmStorage {
         return jdbcTemplate.queryForList(sqlQuery, Integer.class, filmId);
     }
 
-    public List<Genre> getGenres(Integer filmId) {
+    private List<Genre> getGenres(Integer filmId) {
         String sqlQuery = "select g.genre_id, r.name from genres g left join ref_genres r on r.id=g.genre_id where g.film_id = ? order by g.genre_id";
-        return jdbcTemplate.query(sqlQuery, this::mapRowToGenre, filmId);
+        return jdbcTemplate.query(sqlQuery, this::mapRowToRefGenre, filmId);
     }
 
     private Film mapRowToFilm(ResultSet resultSet, int rowNum) throws SQLException {
@@ -184,7 +184,7 @@ public class FilmDbStorage implements FilmStorage {
                 .build();
     }
 
-    public Genre mapRowToGenre(ResultSet resultSet, int rowNum) throws SQLException {
+    private Genre mapRowToRefGenre(ResultSet resultSet, int rowNum) throws SQLException {
         return Genre.builder()
                 .id(resultSet.getInt("genre_id"))
                 .name(resultSet.getString("name"))
