@@ -8,4 +8,4 @@
 6. **Таблица REF_GENRES**. Справочник жанров.
 7. **Таблица REF_MPA**. Справочник MPA.
 
-![](./data_model.png)
+![](./data_model_new.png)
