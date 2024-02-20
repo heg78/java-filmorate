@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
-@Component
+@Repository
 public class MpaDbStorage implements MpaStorage {
     private final JdbcTemplate jdbcTemplate;
 

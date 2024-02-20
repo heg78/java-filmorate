@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Genre;
 
@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
-@Component
+@Repository
 public class GenreDbStorage implements GenreStorage {
     private final JdbcTemplate jdbcTemplate;
 
@@ -30,14 +30,14 @@ public class GenreDbStorage implements GenreStorage {
         return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToGenre, id);
     }
 
-    public Genre mapRowToGenre(ResultSet resultSet, int rowNum) throws SQLException {
+    private Genre mapRowToGenre(ResultSet resultSet, int rowNum) throws SQLException {
         return Genre.builder()
                 .id(resultSet.getInt("id"))
                 .name(resultSet.getString("name"))
                 .build();
     }
 
-    public boolean exists(Integer id) {
+    private boolean exists(Integer id) {
         String sqlQuery = "select exists(select 1 from ref_genres where id = ?)";
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, id));
     }

@@ -2,11 +2,10 @@ package ru.yandex.practicum.filmorate.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exception.CreateException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
@@ -16,14 +15,15 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
-@Component
+@Repository
 public class UserDbStorage implements UserStorage {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
     public UserDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -95,7 +95,7 @@ public class UserDbStorage implements UserStorage {
         }
     }
 
-    boolean exists(Integer id) {
+    private boolean exists(Integer id) {
         String sqlQuery = "select exists(select 1 from users where id = ?)";
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sqlQuery, Boolean.class, id));
     }
