@@ -69,13 +69,13 @@ public class UserDbStorageTest {
         UserDbStorage userStorage = new UserDbStorage(jdbcTemplate);
         Integer userID = userStorage.create(newUser).getId();
         Integer userID2 = userStorage.create(newUser2).getId();
-        userStorage.addFriend(userID,userID2);
+        userStorage.addFriend(userID, userID2);
         assertThat(userStorage.getFriends(userID))
                 .isNotNull()
                 .usingRecursiveComparison()
                 .isEqualTo(List.of(userID2));
 
-        userStorage.deleteFriend(userID,userID2);
+        userStorage.deleteFriend(userID, userID2);
         assertThat(userStorage.getFriends(userID))
                 .isNotNull()
                 .usingRecursiveComparison()
